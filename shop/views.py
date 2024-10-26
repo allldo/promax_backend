@@ -2,8 +2,8 @@ from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView
 from rest_framework.response import Response
 
-from shop.models import Product
-from shop.serializers import ProductSerializer
+from shop.models import Product, Category
+from shop.serializers import ProductSerializer, CategorySerializer
 
 
 class ProductListView(ListAPIView):
@@ -35,3 +35,8 @@ class ProductBestView(GenericAPIView):
         products = Product.objects.filter(is_trend=True)
         serialized = ProductSerializer(products, many=True)
         return Response({"products_trend": serialized.data}, status=status.HTTP_200_OK)
+
+
+class CategoryListView(ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer

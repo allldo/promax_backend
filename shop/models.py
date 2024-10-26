@@ -1,15 +1,20 @@
-from django.db.models import Model, CharField, IntegerField, BooleanField, ForeignKey, SET_NULL, CASCADE, JSONField, TextField
+from django.db.models import Model, CharField, IntegerField, BooleanField, ForeignKey, SET_NULL, CASCADE, JSONField, \
+    TextField, ImageField, ManyToManyField, SlugField
+from django.utils.text import slugify
+
 
 class Product(Model):
     title = CharField(max_length=225)
-    slug = CharField(max_length=225)
+    slug = SlugField(unique=True, blank=True)
     artikul = IntegerField()
     description = TextField()
     sub_category = ForeignKey("SubCategory", on_delete=SET_NULL, null=True)
     price = IntegerField()
+    sale = IntegerField(default=0)
     size = JSONField()
     chars = JSONField()
-    images = JSONField()
+    detail_chars = JSONField()
+    images = ManyToManyField("Image", blank=True)
     is_trend = BooleanField(default=False)
     is_hit = BooleanField(default=False)
     is_best = BooleanField(default=False)
@@ -17,13 +22,34 @@ class Product(Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Product, self).save(*args, **kwargs)
+
 class Category(Model):
     title = CharField(max_length=225)
 
+    def __str__(self):
+        return self.title
+
 class SubCategory(Model):
     title = CharField(max_length=225)
-    category = ForeignKey("Category", on_delete=CASCADE)
+    category = ForeignKey("Category", on_delete=CASCADE, related_name="sub_categories")
 
-# class Service(Model):
-#     title
-#
+    def __str__(self):
+        return self.title
+
+class Image(Model):
+    image = ImageField(upload_to='images')
+    def __str__(self):
+        return f"Image № {self.id}"
+
+class Service(Model):
+    title = CharField(max_length=225)
+    slug = SlugField(unique=True, blank=True)
+    icon = ImageField(upload_to='service_icons/')
+    image = ImageField(upload_to='service_images/')
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Service, self).save(*args, **kwargs)
