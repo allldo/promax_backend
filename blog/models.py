@@ -1,5 +1,5 @@
 from django.db.models import Model, CharField, SlugField, ImageField
-from django.utils.text import slugify
+from pytils.translit import slugify
 
 
 class Post(Model):

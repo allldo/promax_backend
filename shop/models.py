@@ -1,7 +1,6 @@
 from django.db.models import Model, CharField, IntegerField, BooleanField, ForeignKey, SET_NULL, CASCADE, JSONField, \
     TextField, ImageField, ManyToManyField, SlugField
-from django.utils.text import slugify
-
+from pytils.translit import slugify
 
 class Product(Model):
     title = CharField(max_length=225)
