@@ -13,7 +13,7 @@ import os.path
 from corsheaders.defaults import default_headers
 from pathlib import Path
 import environ
-from django.conf.global_settings import STATIC_ROOT
+
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -130,7 +130,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 try:

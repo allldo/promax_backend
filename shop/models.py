@@ -44,12 +44,3 @@ class Image(Model):
     def __str__(self):
         return f"Image № {self.id}"
 
-class Service(Model):
-    title = CharField(max_length=225)
-    slug = SlugField(unique=True, blank=True)
-    icon = ImageField(upload_to='service_icons/')
-    image = ImageField(upload_to='service_images/')
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
-        super(Service, self).save(*args, **kwargs)
