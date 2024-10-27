@@ -58,13 +58,13 @@ class ProductListView(ListAPIView):
 
             if self.request.GET.get('is_hit') is not None:
                 query += " AND is_hit = %s"
-                params.append(request.GET.get('is_hit').lower() == 'true')
+                params.append(self.request.GET.get('is_hit').lower() == 'true')
             if self.request.GET.get('is_trend') is not None:
                 query += " AND is_trend = %s"
-                params.append(request.GET.get('is_trend').lower() == 'true')
+                params.append(self.request.GET.get('is_trend').lower() == 'true')
             if self.request.GET.get('is_best') is not None:
                 query += " AND is_best = %s"
-                params.append(request.GET.get('is_best').lower() == 'true')
+                params.append(self.request.GET.get('is_best').lower() == 'true')
 
             cursor.execute(query, params)
             product_ids = [row[0] for row in cursor.fetchall()]
