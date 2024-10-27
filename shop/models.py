@@ -10,6 +10,7 @@ class Product(Model):
     sub_category = ForeignKey("SubCategory", on_delete=SET_NULL, null=True)
     price = IntegerField()
     sale = IntegerField(default=0)
+    # {"width": "123", "length": "53"} такого вида (str)
     size = JSONField()
     chars = JSONField()
     detail_chars = JSONField()
@@ -24,6 +25,9 @@ class Product(Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super(Product, self).save(*args, **kwargs)
+
+    def get_discounted_price(self):
+        return self.price * (1 - self.sale / 100)
 
 class Category(Model):
     title = CharField(max_length=225)

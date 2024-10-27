@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = env('DEBUG')
-
+SERVER_ADDRESS = "http://188.225.18.241:8888"
 ALLOWED_HOSTS = ['188.225.18.241']
 # change later
 CORS_ALLOW_ALL_ORIGINS = True
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'drf_spectacular',
     'rest_framework',
+    'django_filters',
     #apps
     'blog',
     'shop',
@@ -96,6 +97,8 @@ DATABASES = {
 
 REST_FRAMEWORK = {
 'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+
 }
 
 SPECTACULAR_SETTINGS = {

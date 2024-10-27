@@ -1,4 +1,5 @@
 .venv/
+venv/
 local_settings.py
 /media/
 prev_models.py
