@@ -20,21 +20,21 @@ class ProductHitsView(GenericAPIView):
     def get(self, request):
         products = Product.objects.filter(is_hit=True)
         serialized = ProductSerializer(products, many=True)
-        return Response({"products_hit": serialized.data}, status=status.HTTP_200_OK)
+        return Response({"products": serialized.data}, status=status.HTTP_200_OK)
 
 class ProductTrendView(GenericAPIView):
     serializer_class = ProductSerializer
     def get(self, request):
         products = Product.objects.filter(is_best=True)
         serialized = ProductSerializer(products, many=True)
-        return Response({"products_best": serialized.data}, status=status.HTTP_200_OK)
+        return Response({"products": serialized.data}, status=status.HTTP_200_OK)
 
 class ProductBestView(GenericAPIView):
     serializer_class = ProductSerializer
     def get(self, request):
         products = Product.objects.filter(is_trend=True)
         serialized = ProductSerializer(products, many=True)
-        return Response({"products_trend": serialized.data}, status=status.HTTP_200_OK)
+        return Response({"products": serialized.data}, status=status.HTTP_200_OK)
 
 
 class CategoryListView(ListAPIView):
