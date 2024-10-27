@@ -34,9 +34,14 @@ class ProductListView(ListAPIView):
         return Response(serializer.data)
 
     def filter_products_by_size(self, queryset, width_max, width_min, length_max, length_min):
+        product_ids = list(queryset.values_list('id', flat=True))
+
+        if not product_ids:
+            return Product.objects.none()
+
         with connection.cursor() as cursor:
             query = "SELECT * FROM shop_product WHERE id IN %s"
-            params = [tuple(queryset.values_list('id', flat=True))]
+            params = [tuple(product_ids)]
 
             if width_max is not None:
                 query += " AND CAST(size->>'width' AS FLOAT) <= %s"
