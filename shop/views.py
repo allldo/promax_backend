@@ -1,5 +1,7 @@
 from django.db import connection
-from django.db.models import Min, Max
+from django.db.models import Min, Max, FloatField
+from django.db.models.fields.json import KeyTextTransform
+from django.db.models.functions import Cast
 from django.template.context_processors import request
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
@@ -118,14 +120,19 @@ class PriceAndSizeView(APIView):
         min_price = min(discounted_prices) if discounted_prices else None
         max_price = max(discounted_prices) if discounted_prices else None
 
-        width_stats = products.aggregate(
-                min_width=Min('size__width'),
-                max_width=Max('size__width')
-            )
-        length_stats = products.aggregate(
-                min_length=Min('size__length'),
-                max_length=Max('size__length')
-            )
+        width_stats = products.annotate(
+            width=Cast(KeyTextTransform('width', 'size'), FloatField())
+        ).aggregate(
+            min_width=Min('width'),
+            max_width=Max('width')
+        )
+
+        length_stats = products.annotate(
+            length=Cast(KeyTextTransform('length', 'size'), FloatField())
+        ).aggregate(
+            min_length=Min('length'),
+            max_length=Max('length')
+        )
         data = {
             "prices": {
                 "min": min_price,
