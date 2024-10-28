@@ -14,13 +14,13 @@ class ProductSerializer(ModelSerializer):
     length =SerializerMethodField()
     class Meta:
         model = Product
-        fields = "__all__"
+        exclude = ['sale_price']
 
     def get_images(self, obj):
         return [f"{settings.SERVER_ADDRESS}{image.image.url}" for image in obj.images.all()]
 
     def get_price(self, obj):
-        return float(obj.price * (1 - (obj.sale / 100)))
+        return obj.sale_price
 
     def get_width(self, obj):
         size_data = obj.size
