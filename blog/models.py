@@ -58,7 +58,7 @@ class Instagram(Model):
         return self.title
 
 class CaseItem(Model):
-    link = CharField(max_length=500)
+    iframe = TextField()
     title = CharField(max_length=225)
 
     def __str__(self):
