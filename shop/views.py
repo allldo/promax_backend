@@ -74,7 +74,7 @@ class ProductListView(ListAPIView):
         return Product.objects.filter(id__in=product_ids)
 
 class ProductDetailView(RetrieveAPIView):
-    lookup_field = 'id'
+    lookup_field = 'slug'
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 

@@ -7,7 +7,7 @@ from shop.models import Image
 class Post(Model):
     title = CharField(max_length=225)
     image = ImageField(upload_to='blog/')
-    slug = SlugField(unique=True, blank=True)
+    slug = SlugField(max_length=275, unique=True, blank=True)
     blocks = ManyToManyField("Block", blank=True)
 
     def __str__(self):
@@ -66,7 +66,7 @@ class CaseItem(Model):
 
 class Service(Model):
     title = CharField(max_length=225)
-    slug = SlugField(unique=True, blank=True)
+    slug = SlugField(max_length=275, unique=True, blank=True)
     icon = ImageField(upload_to='service_icons/')
     image = ImageField(upload_to='service_images/')
 

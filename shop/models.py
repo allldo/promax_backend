@@ -4,9 +4,11 @@ from pytils.translit import slugify
 
 class Product(Model):
     title = CharField(max_length=225)
-    slug = SlugField(unique=True, blank=True)
+    slug = SlugField(max_length=275, unique=True, blank=True)
     artikul = IntegerField()
-    description = TextField()
+    description = TextField(null=True, blank=True)
+    sposob_ukladki = TextField(null=True, blank=True)
+    parketnaya_himia = TextField(null=True, blank=True)
     sub_category = ForeignKey("SubCategory", on_delete=SET_NULL, null=True)
     price = IntegerField()
     sale = IntegerField(default=0)

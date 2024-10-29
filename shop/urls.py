@@ -5,7 +5,7 @@ from shop.views import ProductListView, ProductDetailView, ProductHitsView, Prod
 
 urlpatterns = [
     path('products', ProductListView.as_view()),
-    path('product/<int:id>', ProductDetailView.as_view()),
+    path('product/<str:slug>', ProductDetailView.as_view()),
     path('hit', ProductHitsView.as_view()),
     path('trend', ProductTrendView.as_view()),
     path('best', ProductBestView.as_view()),
