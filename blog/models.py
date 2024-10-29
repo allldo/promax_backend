@@ -66,6 +66,7 @@ class CaseItem(Model):
 
 class Service(Model):
     title = CharField(max_length=225)
+    subtitle = CharField(max_length=275)
     slug = SlugField(max_length=275, unique=True, blank=True)
     icon = ImageField(upload_to='service_icons/')
     image = ImageField(upload_to='service_images/')
