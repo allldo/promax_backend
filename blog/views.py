@@ -9,8 +9,9 @@ class ServiceListView(ListAPIView):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
+
 class ServiceDetailView(RetrieveAPIView):
-    lookup_field = 'id'
+    lookup_field = 'slug'
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
@@ -18,6 +19,7 @@ class ServiceDetailView(RetrieveAPIView):
 class CasesListView(ListAPIView):
     queryset = Case.objects.all()
     serializer_class = CaseSerializer
+
 
 class PostListView(ListAPIView):
     queryset = Post.objects.all()

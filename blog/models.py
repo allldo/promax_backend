@@ -32,6 +32,7 @@ class Case(Model):
     def __str__(self):
         return f"Case № {self.id}"
 
+
 class Youtube(Model):
     title = CharField(max_length=225)
     link = CharField(max_length=325)
@@ -40,14 +41,15 @@ class Youtube(Model):
     def __str__(self):
         return self.title
 
+
 class Telegram(Model):
     title = CharField(max_length=225)
     link = CharField(max_length=325)
     items = ManyToManyField("CaseItem", blank=True)
 
-
     def __str__(self):
         return self.title
+
 
 class Instagram(Model):
     title = CharField(max_length=225)
@@ -57,12 +59,14 @@ class Instagram(Model):
     def __str__(self):
         return self.title
 
+
 class CaseItem(Model):
     iframe = TextField()
     title = CharField(max_length=225)
 
     def __str__(self):
         return self.title
+
 
 class Service(Model):
     title = CharField(max_length=225)
@@ -74,3 +78,6 @@ class Service(Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super(Service, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
