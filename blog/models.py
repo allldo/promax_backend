@@ -1,4 +1,5 @@
-from django.db.models import Model, CharField, SlugField, ImageField, ForeignKey, SET_NULL, ManyToManyField, TextField
+from django.db.models import Model, CharField, SlugField, ImageField, ForeignKey, SET_NULL, ManyToManyField, TextField, \
+    IntegerField
 from pytils.translit import slugify
 
 from shop.models import Image
@@ -74,10 +75,25 @@ class Service(Model):
     slug = SlugField(max_length=275, unique=True, blank=True)
     icon = ImageField(upload_to='service_icons/')
     image = ImageField(upload_to='service_images/')
-
+    prices = ForeignKey("Price", on_delete=SET_NULL, null=True, blank=True)
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super(Service, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
+
+
+class Price(Model):
+    title = CharField(max_length=335)
+    items = ManyToManyField("PriceItem", blank=True, related_name="price_items")
+
+    def __str__(self):
+        return self.title
+
+class PriceItem(Model):
+    name = CharField(max_length=335)
+    price = IntegerField()
+
+    def __str__(self):
+        return f"{self.name} {self.price}"

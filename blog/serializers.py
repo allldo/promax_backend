@@ -1,10 +1,21 @@
 from rest_framework.serializers import ModelSerializer
 
-from blog.models import Service, Case, Post, CaseItem, Youtube, Telegram, Instagram, Block
+from blog.models import Service, Case, Post, CaseItem, Youtube, Telegram, Instagram, Block, PriceItem, Price
 
+
+class PriceItemSerializer(ModelSerializer):
+    class Meta:
+        model = PriceItem
+        fields = "__all__"
+
+class PriceSerializer(ModelSerializer):
+    items = PriceItemSerializer(many=True)
+    class Meta:
+        model = Price
+        fields = "__all__"
 
 class ServiceSerializer(ModelSerializer):
-
+    prices = PriceSerializer(many=False)
     class Meta:
         model = Service
         fields = "__all__"
