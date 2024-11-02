@@ -1,6 +1,9 @@
+from django.conf import settings
+from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
-from blog.models import Service, Case, Post, CaseItem, Youtube, Telegram, Instagram, Block, PriceItem, Price
+from blog.models import Service, Case, Post, CaseItem, Youtube, Telegram, Instagram, Block, PriceItem, Price, \
+    FloorWorkItem, FloorWorks, Advantage
 
 
 class PriceItemSerializer(ModelSerializer):
@@ -75,3 +78,34 @@ class PostSerializer(ModelSerializer):
     class Meta:
         model = Post
         fields = "__all__"
+
+
+class FloorWorkItemSerializer(ModelSerializer):
+
+    class Meta:
+        model = FloorWorkItem
+        fields = "__all__"
+
+
+class FloorWorksSerializer(ModelSerializer):
+
+    items = FloorWorkItemSerializer(many=True)
+    images = SerializerMethodField()
+
+    class Meta:
+        model = FloorWorks
+        fields = "__all__"
+
+    def get_images(self, obj):
+        return [f"{settings.SERVER_ADDRESS}{image.image.url}" for image in obj.images.all()]
+
+
+class AdvantageSerializer(ModelSerializer):
+    image = SerializerMethodField()
+    class Meta:
+        model = Advantage
+        fields = "__all__"
+
+    def get_image(self, obj):
+        if obj.image:
+            return f"{settings.SERVER_ADDRESS}{obj.image.image.url}"

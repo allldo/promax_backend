@@ -92,9 +92,26 @@ class Price(Model):
     def __str__(self):
         return self.title
 
+
 class PriceItem(Model):
     name = CharField(max_length=335)
     price = IntegerField()
 
     def __str__(self):
         return f"{self.name} {self.price}"
+
+
+class FloorWorks(Model):
+    title = CharField(max_length=275)
+    subtitle = CharField(max_length=275)
+    items = ManyToManyField("FloorWorkItem", blank=True)
+    images = ManyToManyField("shop.Image", blank=True)
+
+
+class FloorWorkItem(Model):
+    name = CharField(max_length=275)
+
+
+class Advantage(Model):
+    text = CharField(max_length=275)
+    image = ForeignKey("shop.Image", on_delete=SET_NULL, null=True, blank=True)
