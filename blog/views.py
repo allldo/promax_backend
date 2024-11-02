@@ -1,7 +1,8 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
-from blog.serializers import ServiceSerializer, CaseSerializer, PostSerializer
-from blog.models import Service, Case, Post
+
+from blog.serializers import ServiceSerializer, CaseSerializer, PostSerializer, PriceItemSerializer
+from blog.models import Service, Case, Post, PriceItem
 
 
 class ServiceListView(ListAPIView):
@@ -29,3 +30,8 @@ class PostDetailView(RetrieveAPIView):
     lookup_field = 'slug'
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+
+class ServicePricesListView(ListAPIView):
+    queryset = PriceItem.objects.all()
+    serializer_class = PriceItemSerializer

@@ -1,10 +1,24 @@
-from decimal import Decimal
-
-from django.db.models import Model
 from rest_framework.fields import SerializerMethodField
+from rest_framework.relations import StringRelatedField
 from rest_framework.serializers import ModelSerializer
 from django.conf import settings
+
 from shop.models import Product, Category, SubCategory, Image
+
+
+class SubCategorySerializer(ModelSerializer):
+    category = StringRelatedField(read_only=True)
+
+    class Meta:
+        model = SubCategory
+        fields = ('id', 'title', 'category')
+
+
+class CategorySerializer(ModelSerializer):
+    sub_categories = SubCategorySerializer(many=True, read_only=True)
+    class Meta:
+        model = Category
+        fields =('id', 'title', 'sub_categories')
 
 
 class ProductSerializer(ModelSerializer):
@@ -12,6 +26,8 @@ class ProductSerializer(ModelSerializer):
     price = SerializerMethodField()
     width = SerializerMethodField()
     length =SerializerMethodField()
+    sub_category = SubCategorySerializer(many=False)
+
     class Meta:
         model = Product
         exclude = ['sale_price']
@@ -30,15 +46,3 @@ class ProductSerializer(ModelSerializer):
         size_data = obj.size
         return size_data.get('length')
 
-
-class SubCategorySerializer(ModelSerializer):
-    class Meta:
-        model = SubCategory
-        fields = ('id', 'title')
-
-
-class CategorySerializer(ModelSerializer):
-    sub_categories = SubCategorySerializer(many=True)
-    class Meta:
-        model = Category
-        fields =('id', 'title', 'sub_categories')
