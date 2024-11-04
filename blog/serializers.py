@@ -17,8 +17,15 @@ class PriceSerializer(ModelSerializer):
         model = Price
         fields = "__all__"
 
+class BlockSerializer(ModelSerializer):
+
+    class Meta:
+        model = Block
+        fields = "__all__"
+
 class ServiceSerializer(ModelSerializer):
     prices = PriceSerializer(many=False)
+    blocks = BlockSerializer(many=True)
     class Meta:
         model = Service
         fields = "__all__"
@@ -62,13 +69,6 @@ class CaseSerializer(ModelSerializer):
 
     class Meta:
         model = Case
-        fields = "__all__"
-
-
-class BlockSerializer(ModelSerializer):
-
-    class Meta:
-        model = Block
         fields = "__all__"
 
 
