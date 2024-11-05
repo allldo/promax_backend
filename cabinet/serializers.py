@@ -11,7 +11,7 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'password', 'phone_number')
 
 
 class UserLoginSerializer(ModelSerializer):
@@ -26,7 +26,6 @@ class UserLoginSerializer(ModelSerializer):
     def validate(self, data):
         username = data.get('username')
         password = data.get('password')
-        print(password)
         if not CustomUser.objects.filter(username=username).exists():
             raise ValidationError({"username": "User does not exist!"})
 

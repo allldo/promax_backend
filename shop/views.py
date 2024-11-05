@@ -5,9 +5,12 @@ from django.db.models.functions import Cast
 from django.template.context_processors import request
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ViewSet
 
 from shop.filters import ProductFilter
 from shop.models import Product, Category
@@ -148,3 +151,34 @@ class PriceAndSizeView(APIView):
             }
         }
         return Response(data)
+
+
+class FavoriteAddAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        product = Product.objects.get(id=request.data.get('productId'))
+        request.user.favorite.add(product)
+        return Response({"result": True})
+
+
+class FavoriteListAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        products = request.user.favorite.all()
+
+        return Response(ProductSerializer(products, many=True).data)
+
+
+class FavoriteDeleteAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        product = Product.objects.get(id=request.data.get('productId'))
+        request.user.favorite.remove(product)
+
+        return Response({"deleted from favorites": True})
