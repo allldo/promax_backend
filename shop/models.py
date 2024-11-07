@@ -21,6 +21,7 @@ class Product(Model):
     is_hit = BooleanField(default=False)
     is_best = BooleanField(default=False)
     sale_price = IntegerField(null=True, blank=True)
+    useful_product = ManyToManyField("shop.Product", blank=True)
 
     def __str__(self):
         return self.title

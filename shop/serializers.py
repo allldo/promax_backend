@@ -21,12 +21,28 @@ class CategorySerializer(ModelSerializer):
         fields =('id', 'title', 'sub_categories')
 
 
+class ProductNestedSerializer(ModelSerializer):
+    images = SerializerMethodField()
+    price = SerializerMethodField()
+    sub_category = SubCategorySerializer(many=False)
+    class Meta:
+        model = Product
+        fields = ['id', 'images', 'price', 'sub_category']
+
+    def get_images(self, obj):
+        return [f"{settings.SERVER_ADDRESS}{image.image.url}" for image in obj.images.all()]
+
+    def get_price(self, obj):
+        return obj.sale_price
+
+
 class ProductSerializer(ModelSerializer):
     images = SerializerMethodField()
     price = SerializerMethodField()
     width = SerializerMethodField()
     length =SerializerMethodField()
     sub_category = SubCategorySerializer(many=False)
+    useful_product = ProductNestedSerializer(many=True)
 
     class Meta:
         model = Product
