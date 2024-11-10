@@ -4,14 +4,18 @@ from django.contrib.auth.admin import UserAdmin
 from cabinet.models import CustomUser
 
 class MyUserAdmin(UserAdmin):
-    fieldsets = UserAdmin.fieldsets + (
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'phone_number')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
         (("Дополнительная информация"), {
-            "fields": ("phone_number", "favorite"),
+            "fields": ("favorite",),
         }),
     )
 
-    list_display = UserAdmin.list_display + ("phone_number",)
-
-    search_fields = UserAdmin.search_fields + ("phone_number",)
+    list_display = ("id", "email", "phone_number",)
+    ordering = ("id", )
+    search_fields = ("email", "phone_number",)
 
 admin.site.register(CustomUser, MyUserAdmin)

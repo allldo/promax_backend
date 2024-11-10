@@ -21,17 +21,17 @@ class UserLoginAPIView(APIView):
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
             response = {
-                "username": {
+                "email": {
                     "detail": "User Doesnot exist!"
                 }
             }
-            if CustomUser.objects.filter(username=request.data['username']).exists():
-                user = CustomUser.objects.get(username=request.data['username'])
+            if CustomUser.objects.filter(email=request.data['email']).exists():
+                user = CustomUser.objects.get(email=request.data['email'])
                 token, created = Token.objects.get_or_create(user=user)
                 response = {
                     'success': True,
-                    'username': user.username,
                     'email': user.email,
+                    'phone_number': user.phone_number,
                     'token': token.key
                 }
                 return Response(response, status=status.HTTP_200_OK)

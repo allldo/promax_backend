@@ -68,7 +68,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'promax.urls'
-
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'cabinet.backend.EmailBackend',
+]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
