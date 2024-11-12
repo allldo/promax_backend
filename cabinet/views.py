@@ -74,7 +74,7 @@ class PasswordResetView(APIView):
             email = serializer.validated_data['email']
             user = CustomUser.objects.get(email=email)
             token = token_generator.make_token(user)
-            reset_url = f"http://188.225.18.241:8888/?password-reset-confirm=true&id={user.id}&key={token}/"
+            reset_url = f"http://188.225.18.241:3001/?password-reset-confirm=true&id={user.id}&key={token}/"
 
             # Отправка письма
             send_mail(
