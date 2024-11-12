@@ -1,5 +1,5 @@
 from django.db.models import Model, CharField, IntegerField, BooleanField, ForeignKey, SET_NULL, CASCADE, JSONField, \
-    TextField, ImageField, ManyToManyField, SlugField
+    TextField, ImageField, ManyToManyField, SlugField, FloatField
 from pytils.translit import slugify
 
 class Product(Model):
@@ -12,6 +12,7 @@ class Product(Model):
     sub_category = ForeignKey("SubCategory", on_delete=SET_NULL, null=True)
     price = IntegerField()
     sale = IntegerField(default=0)
+    squared_metres = FloatField(null=True, blank=True)
     # {"width": "123", "length": "53"} такого вида (str)
     size = JSONField()
     chars = JSONField()
