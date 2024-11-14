@@ -181,4 +181,4 @@ class FavoriteDeleteAPIView(APIView):
         product = Product.objects.get(id=request.data.get('productId'))
         request.user.favorite.remove(product)
 
-        return Response({"deleted from favorites": True})
+        return Response({"result": True})
