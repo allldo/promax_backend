@@ -27,7 +27,7 @@ class ProductNestedSerializer(ModelSerializer):
     sub_category = SubCategorySerializer(many=False)
     class Meta:
         model = Product
-        fields = ['id', 'images', 'price','squared_metres', 'sub_category']
+        fields = ['id', 'slug', 'images', 'price','squared_metres', 'sub_category']
 
     def get_images(self, obj):
         return [f"{settings.SERVER_ADDRESS}{image.image.url}" for image in obj.images.all()]
