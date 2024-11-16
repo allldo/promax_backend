@@ -3,26 +3,26 @@ from django.db.models import Model, CharField, IntegerField, BooleanField, Forei
 from pytils.translit import slugify
 
 class Product(Model):
-    title = CharField(max_length=225)
-    slug = SlugField(max_length=275, unique=True, blank=True)
-    artikul = IntegerField()
-    description = TextField(null=True, blank=True)
-    sposob_ukladki = TextField(null=True, blank=True)
-    parketnaya_himia = TextField(null=True, blank=True)
-    sub_category = ForeignKey("SubCategory", on_delete=SET_NULL, null=True)
-    price = IntegerField()
-    sale = IntegerField(default=0)
-    squared_metres = FloatField(null=True, blank=True)
+    title = CharField(max_length=225, verbose_name="Название")
+    slug = SlugField(max_length=275, unique=True, blank=True, verbose_name="Слаг")
+    artikul = IntegerField(verbose_name="Артикул")
+    description = TextField(null=True, blank=True, verbose_name="Описание")
+    sposob_ukladki = TextField(null=True, blank=True, verbose_name="Способ укладки")
+    parketnaya_himia = TextField(null=True, blank=True, verbose_name="Паркетная Химия")
+    sub_category = ForeignKey("SubCategory", on_delete=SET_NULL, null=True, verbose_name="ПодКатегория")
+    price = IntegerField(verbose_name="Цена")
+    sale = IntegerField(default=0, verbose_name="Скидка")
+    squared_metres = FloatField(null=True, blank=True, verbose_name="Количество метров в упаковке")
     # {"width": "123", "length": "53"} такого вида (str)
-    size = JSONField()
-    chars = JSONField()
-    detail_chars = JSONField()
-    images = ManyToManyField("Image", blank=True)
-    is_trend = BooleanField(default=False)
-    is_hit = BooleanField(default=False)
-    is_best = BooleanField(default=False)
-    sale_price = IntegerField(null=True, blank=True)
-    useful_product = ManyToManyField("shop.Product", blank=True)
+    size = JSONField(verbose_name="Размер")
+    chars = JSONField(verbose_name="Описания")
+    detail_chars = JSONField(verbose_name="Детали продукта")
+    images = ManyToManyField("Image", blank=True, verbose_name="Изображения")
+    is_trend = BooleanField(default=False, verbose_name="Тренд")
+    is_hit = BooleanField(default=False, verbose_name="Хит")
+    is_best = BooleanField(default=False, verbose_name="Лучший")
+    sale_price = IntegerField(null=True, blank=True, verbose_name="Цена после скидки")
+    useful_product = ManyToManyField("shop.Product", blank=True, verbose_name="Полезные товары")
 
     def __str__(self):
         return self.title
@@ -37,21 +37,39 @@ class Product(Model):
     def get_discounted_price(self):
         return self.price * (1 - self.sale / 100)
 
+    class Meta:
+        verbose_name = "Продукт"
+        verbose_name_plural = "Продукты"
+
+
 class Category(Model):
-    title = CharField(max_length=225)
+    title = CharField(max_length=225, verbose_name="Название")
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+
 
 class SubCategory(Model):
-    title = CharField(max_length=225)
-    category = ForeignKey("Category", on_delete=CASCADE, related_name="sub_categories")
+    title = CharField(max_length=225, verbose_name="Название")
+    category = ForeignKey("Category", on_delete=CASCADE, related_name="sub_categories", verbose_name="Категория")
 
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = "ПодКатегория"
+        verbose_name_plural = "ПодКатегории"
+
+
 class Image(Model):
-    image = ImageField(upload_to='images')
+    image = ImageField(upload_to='images', verbose_name="Изображение")
     def __str__(self):
         return f"Image № {self.id}"
 
+    class Meta:
+        verbose_name = "Изображение"
+        verbose_name_plural = "Изображения"
