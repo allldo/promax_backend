@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from rest_framework.exceptions import ValidationError
-from rest_framework.fields import CharField, EmailField
+from rest_framework.fields import CharField, EmailField, ImageField
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer, Serializer
 
@@ -12,10 +12,10 @@ from .models import CustomUser
 
 class UserSerializer(ModelSerializer):
     password = CharField(write_only=True)
-
+    avatar = ImageField(read_only=True)
     class Meta:
         model = CustomUser
-        fields = ('email', 'password', 'phone_number', 'name')
+        fields = ('email', 'password', 'phone_number', 'name', 'avatar')
 
     def create(self, validated_data):
         password = validated_data.pop('password')
@@ -23,6 +23,17 @@ class UserSerializer(ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+class CustomUserUpdateSerializer(ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['name', 'email', 'phone_number', 'avatar']
+
+    def validate_email(self, value):
+        user = self.instance
+        if CustomUser.objects.exclude(pk=user.pk).filter(email=value).exists():
+            raise ValidationError("Этот email уже используется.")
+        return value
 
 
 class UserLoginSerializer(ModelSerializer):

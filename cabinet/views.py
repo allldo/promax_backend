@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.generics import RetrieveAPIView, CreateAPIView
+from rest_framework.generics import RetrieveAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -11,7 +11,7 @@ from rest_framework.authtoken.models import Token
 
 from cabinet.models import CustomUser
 from cabinet.serializers import UserSerializer, UserLoginSerializer, PasswordResetSerializer, \
-    PasswordResetConfirmSerializer
+    PasswordResetConfirmSerializer, CustomUserUpdateSerializer
 
 
 class UserRegistrationView(CreateAPIView):
@@ -63,7 +63,12 @@ class UserInfoRetrieveView(RetrieveAPIView):
     def get_object(self):
         return self.request.user
 
+class CustomUserUpdateView(UpdateAPIView):
+    serializer_class = CustomUserUpdateSerializer
+    permission_classes = [IsAuthenticated]
 
+    def get_object(self):
+        return self.request.user
 
 token_generator = PasswordResetTokenGenerator()
 
