@@ -55,3 +55,7 @@ class ExpressCalc(Model):
     parquet_age = PositiveIntegerField(verbose_name="Возраст паркета")
     phone_number = CharField(max_length=255, verbose_name="Номер телефона")
     photo = ImageField(upload_to="ExpressCalcPhotos/", verbose_name="Фото")
+
+    class Meta:
+        verbose_name = "Расчет"
+        verbose_name_plural = "Расчеты"

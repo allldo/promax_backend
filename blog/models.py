@@ -1,5 +1,5 @@
 from django.db.models import Model, CharField, SlugField, ImageField, ForeignKey, SET_NULL, ManyToManyField, TextField, \
-    IntegerField
+    IntegerField, EmailField, DateTimeField
 from pytils.translit import slugify
 
 from shop.models import Image
@@ -29,7 +29,7 @@ class Block(Model):
     text = TextField(null=True, blank=True, verbose_name="Текст")
 
     def __str__(self):
-        pass
+        return self.title
 
     class Meta:
         verbose_name = "Блок"
@@ -171,3 +171,18 @@ class Advantage(Model):
     class Meta:
         verbose_name = "Преимущество"
         verbose_name_plural = "Преимущества"
+
+
+class Question(Model):
+    name = CharField(max_length=255, verbose_name="ФИО отправителя")
+    phone_number = CharField(max_length=45, verbose_name="Номер телефона")
+    email = EmailField(verbose_name="Эл почта")
+    question = TextField(verbose_name="Вопрос")
+    date = DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} задает вопрос"
+
+    class Meta:
+        verbose_name = "Вопрос"
+        verbose_name_plural = "Вопросы"

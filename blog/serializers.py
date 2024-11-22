@@ -3,7 +3,7 @@ from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
 from blog.models import Service, Case, Post, CaseItem, Youtube, Telegram, Instagram, Block, PriceItem, Price, \
-    FloorWorkItem, FloorWorks, Advantage
+    FloorWorkItem, FloorWorks, Advantage, Question
 
 
 class PriceItemSerializer(ModelSerializer):
@@ -109,3 +109,9 @@ class AdvantageSerializer(ModelSerializer):
     def get_image(self, obj):
         if obj.image:
             return f"{settings.SERVER_ADDRESS}{obj.image.image.url}"
+
+
+class QuestionSerializer(ModelSerializer):
+    class Meta:
+        model = Question
+        fields = "__all__"
