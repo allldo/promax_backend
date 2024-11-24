@@ -56,9 +56,14 @@ class ProductSerializer(ModelSerializer):
 
     def get_width(self, obj):
         size_data = obj.size
-        return float(size_data.get('width'))
+        try:
+            return float(size_data.get('width'))
+        except:
+            return None
     #
     def get_length(self, obj):
         size_data = obj.size
-        return size_data.get('length')
-
+        try:
+            return size_data.get('length')
+        except:
+            return None

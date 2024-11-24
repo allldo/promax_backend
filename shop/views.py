@@ -92,14 +92,14 @@ class ProductHitsView(GenericAPIView):
 class ProductTrendView(GenericAPIView):
     serializer_class = ProductSerializer
     def get(self, request):
-        products = Product.objects.filter(is_best=True)
+        products = Product.objects.filter(is_trend=True)
         serialized = ProductSerializer(products, many=True)
         return Response({"products": serialized.data}, status=status.HTTP_200_OK)
 
 class ProductBestView(GenericAPIView):
     serializer_class = ProductSerializer
     def get(self, request):
-        products = Product.objects.filter(is_trend=True)
+        products = Product.objects.filter(is_best=True)
         serialized = ProductSerializer(products, many=True)
         return Response({"products": serialized.data}, status=status.HTTP_200_OK)
 
