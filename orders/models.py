@@ -1,7 +1,6 @@
 from django.db.models import Model, CharField, ForeignKey, EmailField, TextField, SET_NULL, DateTimeField, \
     ManyToManyField, PositiveIntegerField, CASCADE, ImageField
 
-from cabinet.models import CustomUser
 from shop.models import Product
 
 

@@ -1,8 +1,5 @@
-from msilib.schema import ListView
-
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
-from django.urls import reverse
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import RetrieveAPIView, CreateAPIView, UpdateAPIView, ListAPIView

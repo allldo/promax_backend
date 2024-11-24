@@ -1,5 +1,4 @@
-from django.template.defaulttags import url
-from django.urls import path, include
+from django.urls import path
 
 from cabinet.views import UserRegistrationView, UserLoginAPIView, UserInfoRetrieveView, UserLogoutAPIView, \
     PasswordResetView, PasswordResetConfirmView, CustomUserUpdateView, UserOrderListView
