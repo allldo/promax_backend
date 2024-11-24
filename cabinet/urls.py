@@ -2,7 +2,7 @@ from django.template.defaulttags import url
 from django.urls import path, include
 
 from cabinet.views import UserRegistrationView, UserLoginAPIView, UserInfoRetrieveView, UserLogoutAPIView, \
-    PasswordResetView, PasswordResetConfirmView, CustomUserUpdateView
+    PasswordResetView, PasswordResetConfirmView, CustomUserUpdateView, UserOrderListView
 
 urlpatterns = [
     path('register/', UserRegistrationView.as_view()),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('update/', CustomUserUpdateView.as_view()),
     path('password-reset/', PasswordResetView.as_view()),
     path('password-reset-confirm/<int:uid>/<str:token>/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
+    path('my_orders/', UserOrderListView.as_view())
 ]

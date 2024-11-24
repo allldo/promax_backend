@@ -27,8 +27,8 @@ class ProductOrderSerializer(ModelSerializer):
     )
 
     class Meta:
-        model = ProductOrder
-        fields = '__all__'
+        model = ProductOrder    
+        exclude = ['user']
 
     def validate_order_items(self, value):
 
@@ -42,11 +42,11 @@ class ProductOrderSerializer(ModelSerializer):
         return value
 
     def create(self, validated_data):
-
+        user = self.context['request'].user
         order_items = validated_data.pop('order_items', [])
         product_order = ProductOrder.objects.create(**validated_data)
-
-
+        product_order.user = user
+        product_order.save()
         for item in order_items:
             product_id = item['id']
             count = item['count']

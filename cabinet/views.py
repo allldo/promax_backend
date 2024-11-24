@@ -1,9 +1,11 @@
+from msilib.schema import ListView
+
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.generics import RetrieveAPIView, CreateAPIView, UpdateAPIView
+from rest_framework.generics import RetrieveAPIView, CreateAPIView, UpdateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,6 +14,8 @@ from rest_framework.authtoken.models import Token
 from cabinet.models import CustomUser
 from cabinet.serializers import UserSerializer, UserLoginSerializer, PasswordResetSerializer, \
     PasswordResetConfirmSerializer, CustomUserUpdateSerializer
+from orders.models import ProductOrder
+from orders.serializers import ProductOrderSerializer
 
 
 class UserRegistrationView(CreateAPIView):
@@ -105,3 +109,12 @@ class PasswordResetConfirmView(APIView):
             serializer.save(user=user)
             return Response({"detail": "Пароль успешно изменен."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserOrderListView(ListAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = ProductOrderSerializer
+
+    def get_queryset(self):
+        return ProductOrder.objects.filter(user=self.request.user)

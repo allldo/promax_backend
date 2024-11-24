@@ -1,6 +1,7 @@
 from django.db.models import Model, CharField, ForeignKey, EmailField, TextField, SET_NULL, DateTimeField, \
     ManyToManyField, PositiveIntegerField, CASCADE, ImageField
 
+from cabinet.models import CustomUser
 from shop.models import Product
 
 
@@ -31,6 +32,7 @@ class ProductOrder(Model):
     comments_on_order = TextField(verbose_name='Комментарии по заказу')
     order_items = ManyToManyField("shop.Product", blank=True, verbose_name='Продукты в заказе')
     date = DateTimeField(auto_now_add=True, verbose_name='Дата')
+    user = ForeignKey("cabinet.CustomUser", on_delete=SET_NULL, null=True, blank=True)
 
     class Meta:
         verbose_name = "Заказ продукта"
