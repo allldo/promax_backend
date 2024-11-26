@@ -49,16 +49,16 @@ class ProductListView(ListAPIView):
             query = "SELECT * FROM shop_product WHERE id IN %s"
             params = [tuple(product_ids)]
 
-            if width_max is not None:
+            if width_max is not None and width_max != 0:
                 query += " AND CAST(size->>'width' AS FLOAT) <= %s"
                 params.append(float(width_max))
-            if width_min is not None:
+            if width_min is not None and width_min != 0:
                 query += " AND CAST(size->>'width' AS FLOAT) >= %s"
                 params.append(float(width_min))
-            if length_max is not None:
+            if length_max is not None and length_max != 0:
                 query += " AND CAST(size->>'length' AS FLOAT) <= %s"
                 params.append(float(length_max))
-            if length_min is not None:
+            if length_min is not None and length_min != 0:
                 query += " AND CAST(size->>'length' AS FLOAT) >= %s"
                 params.append(float(length_min))
 
