@@ -15,6 +15,7 @@ from rest_framework.viewsets import ViewSet
 from cabinet.models import CustomUser
 from shop.filters import ProductFilter
 from shop.models import Product, Category
+from shop.paginator import StandardResultsSetPagination
 from shop.serializers import ProductSerializer, CategorySerializer
 
 
@@ -22,6 +23,7 @@ class ProductListView(ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filterset_class = ProductFilter
+    pagination_class = StandardResultsSetPagination
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -36,6 +38,10 @@ class ProductListView(ListAPIView):
         if width_max is not None or width_min is not None or length_max is not None or length_min is not None:
             queryset = self.filter_products_by_size(queryset, width_max, width_min, length_max, length_min)
 
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -48,17 +54,16 @@ class ProductListView(ListAPIView):
         with connection.cursor() as cursor:
             query = "SELECT * FROM shop_product WHERE id IN %s"
             params = [tuple(product_ids)]
-
-            if width_max is not None and width_max != 0:
+            if width_max is not None:
                 query += " AND CAST(size->>'width' AS FLOAT) <= %s"
                 params.append(float(width_max))
-            if width_min is not None and width_min != 0:
+            if width_min is not None:
                 query += " AND CAST(size->>'width' AS FLOAT) >= %s"
                 params.append(float(width_min))
-            if length_max is not None and length_max != 0:
+            if length_max is not None:
                 query += " AND CAST(size->>'length' AS FLOAT) <= %s"
                 params.append(float(length_max))
-            if length_min is not None and length_min != 0:
+            if length_min is not None:
                 query += " AND CAST(size->>'length' AS FLOAT) >= %s"
                 params.append(float(length_min))
 
@@ -85,21 +90,21 @@ class ProductDetailView(RetrieveAPIView):
 class ProductHitsView(GenericAPIView):
     serializer_class = ProductSerializer
     def get(self, request):
-        products = Product.objects.filter(is_hit=True)
+        products = Product.objects.filter(is_hit=True)[:8]
         serialized = ProductSerializer(products, many=True)
         return Response({"products": serialized.data}, status=status.HTTP_200_OK)
 
 class ProductTrendView(GenericAPIView):
     serializer_class = ProductSerializer
     def get(self, request):
-        products = Product.objects.filter(is_trend=True)
+        products = Product.objects.filter(is_trend=True)[:8]
         serialized = ProductSerializer(products, many=True)
         return Response({"products": serialized.data}, status=status.HTTP_200_OK)
 
 class ProductBestView(GenericAPIView):
     serializer_class = ProductSerializer
     def get(self, request):
-        products = Product.objects.filter(is_best=True)
+        products = Product.objects.filter(is_best=True)[:8]
         serialized = ProductSerializer(products, many=True)
         return Response({"products": serialized.data}, status=status.HTTP_200_OK)
 
