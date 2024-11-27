@@ -15,7 +15,7 @@ from rest_framework.viewsets import ViewSet
 from cabinet.models import CustomUser
 from shop.filters import ProductFilter
 from shop.models import Product, Category
-from shop.paginator import StandardResultsSetPagination
+# from shop.paginator import StandardResultsSetPagination
 from shop.serializers import ProductSerializer, CategorySerializer
 
 
@@ -23,7 +23,7 @@ class ProductListView(ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filterset_class = ProductFilter
-    pagination_class = StandardResultsSetPagination
+    # pagination_class = StandardResultsSetPagination
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -38,10 +38,10 @@ class ProductListView(ListAPIView):
         if width_max is not None or width_min is not None or length_max is not None or length_min is not None:
             queryset = self.filter_products_by_size(queryset, width_max, width_min, length_max, length_min)
 
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+        # page = self.paginate_queryset(queryset)
+        # if page is not None:
+        #     serializer = self.get_serializer(page, many=True)
+        #     return self.get_paginated_response(serializer.data)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
