@@ -2,6 +2,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.fields import ListField, DictField, IntegerField
 from rest_framework.serializers import ModelSerializer
 
+from blog.models import PriceItem
 from orders.models import ServiceOrder, ProductOrder, ProductOrderItem, ExpressCalc
 
 
@@ -47,9 +48,11 @@ class ProductOrderSerializer(ModelSerializer):
         product_order = ProductOrder.objects.create(**validated_data)
         product_order.user = user
         product_order.save()
+        product_items = []
         for item in order_items:
             product_id = item['id']
             count = item['count']
-            ProductOrderItem.objects.create(product_id=product_id, order=product_order, count=count)
+            product_items.append(ProductOrderItem.objects.create(product_id=product_id, order=product_order, count=count))
+        product_order.order_items.set(product_items)
 
         return product_order

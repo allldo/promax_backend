@@ -75,7 +75,7 @@ AUTHENTICATION_BACKENDS = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -151,8 +151,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'dotan2.maks@mail.ru'
-EMAIL_HOST_PASSWORD = 'xMQDftrCEiEmN1W8J7JD'
+EMAIL_HOST_USER = 'info@parket-promax.ru'
+EMAIL_HOST_PASSWORD = '1WWGckraNUnXgKyjNwzs'
 
 try:
     from .local_settings import *

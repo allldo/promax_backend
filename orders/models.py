@@ -11,8 +11,9 @@ class ServiceOrder(Model):
     delivery_on_order = TextField(verbose_name='Доставка по заказу')
     comments_on_order = TextField(verbose_name='Комментарии по заказу')
     service = ForeignKey("blog.Service", on_delete=SET_NULL, null=True, blank=True, verbose_name='Услуга')
-    price = ForeignKey("blog.Price", on_delete=SET_NULL, null=True, blank=True, verbose_name='Цена')
+    price = ForeignKey("blog.PriceItem", on_delete=SET_NULL, null=True, blank=True, verbose_name='Цена')
     date = DateTimeField(auto_now_add=True, verbose_name='Дата')
+    lift = CharField(max_length=255, null=True, blank=True, verbose_name='Подъем')
 
     def __str__(self):
         return f"{self.name} {self.date}"
@@ -29,7 +30,7 @@ class ProductOrder(Model):
     lift = CharField(max_length=255, verbose_name='Подъем')
     delivery_on_order = TextField(verbose_name='Доставка по заказу')
     comments_on_order = TextField(verbose_name='Комментарии по заказу')
-    order_items = ManyToManyField("shop.Product", blank=True, verbose_name='Продукты в заказе')
+    order_items = ManyToManyField("ProductOrderItem", blank=True, verbose_name='Продукты в заказе')
     date = DateTimeField(auto_now_add=True, verbose_name='Дата')
     user = ForeignKey("cabinet.CustomUser", on_delete=SET_NULL, null=True, blank=True)
 
@@ -39,6 +40,19 @@ class ProductOrder(Model):
 
     def __str__(self):
         return f"{self.name} {self.date}"
+
+    def total_sum(self):
+        total_sum = 0
+        for order_item in self.order_items.all():
+            total_sum += order_item.product.price * order_item.count
+        return total_sum
+
+    def count(self):
+        count_items = 0
+        for order_item in self.order_items.all():
+            count_items += order_item.count
+        return count_items
+
 
 
 class ProductOrderItem(Model):

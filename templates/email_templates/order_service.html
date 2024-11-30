@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .header {
+            background-color: #f4f4f4;
+            padding: 10px 20px;
+            text-align: center;
+            border-bottom: 2px solid #ddd;
+        }
+        .order-details {
+            margin: 20px 0;
+        }
+        .order-item {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Новый заказ услуги</h1>
+    </div>
+    <div class="order-details">
+        <h2>Детали:</h2>
+        <p><strong>Наименование заказа:</strong> {{ ordered_service }}.</p>
+        <p><strong>Общая сумма:</strong> {{ total_sum }} рублей</p>
+        <p><strong>Дата заказа:</strong> {{ order_date }}</p>
+    </div>
+
+    <div class="additional-info">
+        <h3>Дополнительная информация:</h3>
+        <p><strong>Комментарии к заказу:</strong> {{ comments_on_order }}</p>
+        <p><strong>Комментарии к доставке:</strong> {{ delivery_on_order }}</p>
+        <p><strong>Подъем:</strong> {{ lift }}</p>
+        <p><strong>Номер телефона:</strong> {{ phone_number }}</p>
+    </div>
+
+
+</body>
+</html>

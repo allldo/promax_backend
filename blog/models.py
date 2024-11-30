@@ -134,8 +134,8 @@ class Price(Model):
 
 
 class PriceItem(Model):
-    name = CharField(max_length=335, verbose_name="")
-    price = IntegerField(verbose_name="")
+    name = CharField(max_length=335, verbose_name="Имя")
+    price = IntegerField(verbose_name="Цена")
 
     def __str__(self):
         return f"{self.name} {self.price}"
