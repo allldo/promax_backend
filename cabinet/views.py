@@ -12,7 +12,7 @@ from cabinet.models import CustomUser
 from cabinet.serializers import UserSerializer, UserLoginSerializer, PasswordResetSerializer, \
     PasswordResetConfirmSerializer, CustomUserUpdateSerializer
 from orders.models import ProductOrder
-from orders.serializers import ProductOrderSerializer
+from orders.serializers import OrderSerializer
 
 
 class UserRegistrationView(CreateAPIView):
@@ -111,7 +111,7 @@ class PasswordResetConfirmView(APIView):
 class UserOrderListView(ListAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    serializer_class = ProductOrderSerializer
+    serializer_class = OrderSerializer
 
     def get_queryset(self):
-        return ProductOrder.objects.filter(user=self.request.user)
+        return ProductOrder.objects.filter(user=self.request.user).prefetch_related('order_items__product')

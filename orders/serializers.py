@@ -1,5 +1,5 @@
 from rest_framework.exceptions import ValidationError
-from rest_framework.fields import ListField, DictField, IntegerField
+from rest_framework.fields import ListField, DictField, IntegerField, CharField, ImageField, SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
 from blog.models import PriceItem
@@ -56,3 +56,34 @@ class ProductOrderSerializer(ModelSerializer):
         product_order.order_items.set(product_items)
 
         return product_order
+
+
+class OrderItemSerializer(ModelSerializer):
+    product_id = IntegerField(source='product.id')
+    title = CharField(source='product.title')
+    sub_category = CharField(source='product.sub_category.title')
+    image = ImageField(source='product.image', read_only=True)
+
+    class Meta:
+        model = ProductOrderItem
+        fields = ['product_id', 'title', 'sub_category', 'image', 'count']
+
+
+class OrderSerializer(ModelSerializer):
+    order_items = OrderItemSerializer(many=True)
+    total_packages = SerializerMethodField()
+    total_square_meters = SerializerMethodField()
+    total_sum = SerializerMethodField()
+
+    class Meta:
+        model = ProductOrder
+        fields = ['id', 'date', 'order_items', 'total_square_meters', 'total_packages', 'total_sum']
+
+    def get_total_packages(self, obj):
+        return sum(item.count for item in obj.order_items.all())
+
+    def get_total_square_meters(self, obj):
+        return sum(item.product.squared_metres * item.count if item.product.squared_metres else 1 for item in obj.order_items.all())
+
+    def get_total_sum(self, obj):
+        return obj.total_sum()
