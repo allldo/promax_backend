@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import ListField, DictField, IntegerField, CharField, ImageField, SerializerMethodField
 from rest_framework.serializers import ModelSerializer
@@ -62,11 +63,14 @@ class OrderItemSerializer(ModelSerializer):
     product_id = IntegerField(source='product.id')
     title = CharField(source='product.title')
     sub_category = CharField(source='product.sub_category.title')
-    image = ImageField(source='product.image', read_only=True)
+    images = SerializerMethodField()
 
     class Meta:
         model = ProductOrderItem
-        fields = ['product_id', 'title', 'sub_category', 'image', 'count']
+        fields = ['product_id', 'title', 'sub_category', 'images', 'count']
+
+    def get_images(self, obj):
+        return [f"{settings.SERVER_ADDRESS}{image.image.url}" for image in obj.product.images.all()]
 
 
 class OrderSerializer(ModelSerializer):
