@@ -44,6 +44,12 @@ class PriceInline(admin.TabularInline):
     model = Price.items.through
     extra = 1
 
+
+class ServiceInline(admin.TabularInline):
+    model = Service.blocks.through
+    extra = 1
+
+
 class ServiceAdminForm(ModelForm):
     class Meta:
         model = Service
@@ -60,7 +66,18 @@ class ServiceAdminForm(ModelForm):
 
 class ServiceAdmin(admin.ModelAdmin):
     form = ServiceAdminForm
+    inlines = [ServiceInline]
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == "blocks":
+            obj_id = request.resolver_match.kwargs.get('object_id') or request.resolver_match.kwargs.get('pk')
 
+            if obj_id:
+                kwargs["queryset"] = Block.objects.filter(service__isnull=True) | Block.objects.filter(
+                    service=obj_id)
+            else:
+                kwargs["queryset"] = Block.objects.filter(service__isnull=True)
+
+        return super().formfield_for_manytomany(db_field, request, **kwargs)
 
 admin.site.register(Service, ServiceAdmin)
 
