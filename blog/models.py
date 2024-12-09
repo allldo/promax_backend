@@ -25,7 +25,7 @@ class Post(Model):
 
 class Block(Model):
     image = ImageField(upload_to='blocks/', null=True, blank=True, verbose_name="Изображение")
-    title = CharField(max_length=335, verbose_name="Название")
+    title = CharField(max_length=335,null=True, blank=True, verbose_name="Название")
     text = TextField(null=True, blank=True, verbose_name="Текст")
 
     def __str__(self):
