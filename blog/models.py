@@ -29,7 +29,7 @@ class Block(Model):
     text = TextField(null=True, blank=True, verbose_name="Текст")
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else f"{self.id}"
 
     class Meta:
         verbose_name = "Блок"
