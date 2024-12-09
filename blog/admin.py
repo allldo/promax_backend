@@ -5,7 +5,7 @@ from django.forms import ModelForm
 from blog.models import Service, Youtube, Telegram, Instagram, Post, Block, Case, CaseItem, Price, PriceItem, \
     FloorWorks, FloorWorkItem, Advantage, Question
 
-admin.site.register(Service)
+# admin.site.register(Service)
 admin.site.register(Post)
 admin.site.register(Youtube)
 admin.site.register(Telegram)
@@ -43,6 +43,26 @@ class BlockAdmin(admin.ModelAdmin):
 class PriceInline(admin.TabularInline):
     model = Price.items.through
     extra = 1
+
+class ServiceAdminForm(ModelForm):
+    class Meta:
+        model = Service
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.fields['blocks'].queryset = Block.objects.filter(
+                Q(service=self.instance) | Q(service=None)
+            ).distinct()
+        else:
+            self.fields['blocks'].queryset = Block.objects.filter(service=None)
+
+class ServiceAdmin(admin.ModelAdmin):
+    form = ServiceAdminForm
+
+
+admin.site.register(Service, ServiceAdmin)
 
 
 class PriceAdmin(admin.ModelAdmin):

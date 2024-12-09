@@ -107,7 +107,7 @@ class Service(Model):
     icon = ImageField(upload_to='service_icons/', verbose_name="Иконка")
     image = ImageField(upload_to='service_images/', verbose_name="Изображение")
     prices = ForeignKey("Price", on_delete=SET_NULL, null=True, blank=True, verbose_name="Цены")
-    blocks = ManyToManyField("blog.Block", blank=True, verbose_name="Блоки")
+    blocks = ManyToManyField("blog.Block", related_name="service",blank=True, verbose_name="Блоки")
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
