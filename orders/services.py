@@ -109,3 +109,34 @@ def send_email_express(express_calc, send_to):
     email.attach_file(express_calc.photo.path)
     email.attach_alternative(html_content, "text/html")
     email.send()
+
+
+def send_email_question(question, send_to):
+    recipient_list = [send_to]
+    subject = "Новый вопрос"
+
+    context = {
+        'user_name': question.name,
+        'email': question.email,
+        'phone_number': question.phone_number,
+        'question': question.question,
+        'date': question.date
+    }
+    text_content = f"""
+        Вопрос от {question.name}
+      Детали заказа:
+      - Вопрос: {question.question}
+      - Эп почта: {question.email}
+      - Номер телефона: {question.phone_number}
+      - Дата: {question.date}
+       """
+
+    html_content = render_to_string('email_templates/question.html', context)
+    email = EmailMultiAlternatives(
+        subject,
+        text_content,
+        'info@parket-promax.ru',
+        recipient_list
+    )
+    email.attach_alternative(html_content, "text/html")
+    email.send()

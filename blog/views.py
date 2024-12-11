@@ -3,6 +3,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from blog.serializers import ServiceSerializer, CaseSerializer, PostSerializer, PriceItemSerializer, \
     AdvantageSerializer, FloorWorksSerializer, QuestionSerializer
 from blog.models import Service, Case, Post, PriceItem, Advantage, FloorWorks, Question
+from orders.services import send_email_question
 
 
 class ServiceListView(ListAPIView):
@@ -50,3 +51,8 @@ class FloorWorksListView(ListAPIView):
 class QuestionCreateView(CreateAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+
+    def perform_create(self, serializer):
+
+        question = serializer.save()
+        send_email_question(question, send_to="info@parket-promax.ru")
