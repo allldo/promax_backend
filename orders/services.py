@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
@@ -73,5 +75,37 @@ def send_email_service(service_order, send_to):
         'info@parket-promax.ru',
         recipient_list
     )
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+
+
+def send_email_express(express_calc, send_to):
+    recipient_list = [send_to]
+    subject = "Новый экспресс расчет"
+
+    context = {
+        'user_name': express_calc.name,
+        'squared_metres': express_calc.squared_metres,
+        'parquet_age': express_calc.parquet_age,
+        'phone_number': express_calc.phone_number,
+        'date': datetime.now().date()
+    }
+    text_content = f"""
+      Заказ экспресс расчета от {express_calc.name}
+      Детали заказа:
+      - Возраст паркета: {express_calc.parquet_age}
+      - Квадратные метры: {express_calc.squared_metres}
+      - Номер телефона: {express_calc.phone_number}
+      - Дата: {datetime.now().date()}
+       """
+
+    html_content = render_to_string('email_templates/order_express_calc.html', context)
+    email = EmailMultiAlternatives(
+        subject,
+        text_content,
+        'info@parket-promax.ru',
+        recipient_list
+    )
+    email.attach_file(express_calc.photo.path)
     email.attach_alternative(html_content, "text/html")
     email.send()

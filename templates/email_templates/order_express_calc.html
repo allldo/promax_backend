@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .header {
+            background-color: #f4f4f4;
+            padding: 10px 20px;
+            text-align: center;
+            border-bottom: 2px solid #ddd;
+        }
+        .order-details {
+            margin: 20px 0;
+        }
+        .order-item {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Новый заказ экспресс расчета</h1>
+    </div>
+    <div class="order-details">
+        <h2>Детали:</h2>
+        <p><strong>Имя:</strong> {{ user_name }}.</p>
+        <p><strong>Возраст паркета:</strong> {{ parquet_age }} рублей</p>
+        <p><strong>Дата:</strong> {{ date }}</p>
+    </div>
+
+    <div class="additional-info">
+        <h3>Дополнительная информация:</h3>
+        <p><strong>Номер телефона:</strong> {{ phone_number }}</p>
+    </div>
+
+
+</body>
+</html>

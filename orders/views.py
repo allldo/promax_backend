@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from orders.models import ServiceOrder, ProductOrder, ExpressCalc
 from orders.serializers import ServiceOrderSerializer, ProductOrderSerializer, ExpressCalcSerializer
-from orders.services import send_email_order, send_email_service
+from orders.services import send_email_order, send_email_service, send_email_express
 
 
 class ServiceOrderCreateView(CreateAPIView):
@@ -32,3 +32,8 @@ class ProductOrderCreateView(CreateAPIView):
 class ExpressCalcCreateView(CreateAPIView):
     queryset = ExpressCalc.objects.all()
     serializer_class = ExpressCalcSerializer
+
+    def perform_create(self, serializer):
+
+        express_calc = serializer.save()
+        send_email_express(express_calc, send_to="info@parket-promax.ru")
