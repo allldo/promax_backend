@@ -1,5 +1,5 @@
 from django.db.models import Model, CharField, IntegerField, BooleanField, ForeignKey, SET_NULL, CASCADE, JSONField, \
-    TextField, ImageField, ManyToManyField, SlugField, FloatField
+    TextField, ImageField, ManyToManyField, SlugField, FloatField, FileField
 from pytils.translit import slugify
 
 class Product(Model):
@@ -10,9 +10,11 @@ class Product(Model):
     sposob_ukladki = TextField(null=True, blank=True, verbose_name="Способ укладки")
     parketnaya_himia = TextField(null=True, blank=True, verbose_name="Паркетная Химия")
     sub_category = ForeignKey("SubCategory", on_delete=SET_NULL, null=True, verbose_name="ПодКатегория")
-    price = IntegerField(verbose_name="Цена")
+    price = IntegerField(null=True, blank=True, verbose_name="Цена")
     sale = IntegerField(default=0, verbose_name="Скидка")
     squared_metres = FloatField(null=True, blank=True, verbose_name="Количество метров в упаковке")
+    volume = JSONField(null=True, blank=True, verbose_name="Объем и цена")
+    attachment = ForeignKey("Attachment",null=True, blank=True, on_delete=SET_NULL, verbose_name="Ссылка на файл")
     # {"width": "123", "length": "53"} такого вида (str)
     size = JSONField(null=True, blank=True, verbose_name="Размер")
     chars = JSONField(null=True, blank=True, verbose_name="Описания")
@@ -23,6 +25,7 @@ class Product(Model):
     is_best = BooleanField(default=False, verbose_name="Лучший")
     sale_price = IntegerField(null=True, blank=True, verbose_name="Цена после скидки")
     useful_product = ManyToManyField("shop.Product", blank=True, verbose_name="Полезные товары")
+
 
     def __str__(self):
         return self.title
@@ -40,6 +43,10 @@ class Product(Model):
     class Meta:
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
+
+class Attachment(Model):
+    title = CharField(max_length=225, verbose_name="Название")
+    file = FileField(upload_to="attachments/", null=True, blank=True)
 
 
 class Category(Model):

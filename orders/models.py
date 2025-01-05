@@ -59,6 +59,7 @@ class ProductOrderItem(Model):
     order = ForeignKey(ProductOrder, on_delete=CASCADE, related_name="items", verbose_name='Заказ')
     product = ForeignKey(Product, on_delete=CASCADE, verbose_name='Продукт')
     count = PositiveIntegerField(verbose_name='Количество')
+    volume = PositiveIntegerField(verbose_name='Объем')
 
     def __str__(self):
         return f"{self.product} x {self.count}"

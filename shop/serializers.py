@@ -3,7 +3,7 @@ from rest_framework.relations import StringRelatedField
 from rest_framework.serializers import ModelSerializer
 from django.conf import settings
 
-from shop.models import Product, Category, SubCategory, Image
+from shop.models import Product, Category, SubCategory, Image, Attachment
 
 
 class SubCategorySerializer(ModelSerializer):
@@ -36,6 +36,12 @@ class ProductNestedSerializer(ModelSerializer):
         return obj.sale_price
 
 
+class AttachmentSerializer(ModelSerializer):
+    class Meta:
+        model = Attachment
+        fields = '__all__'
+
+
 class ProductSerializer(ModelSerializer):
     images = SerializerMethodField()
     price = SerializerMethodField()
@@ -43,6 +49,7 @@ class ProductSerializer(ModelSerializer):
     length =SerializerMethodField()
     sub_category = SubCategorySerializer(many=False)
     useful_product = ProductNestedSerializer(many=True)
+    attachment = AttachmentSerializer(many=False)
 
     class Meta:
         model = Product
@@ -67,3 +74,4 @@ class ProductSerializer(ModelSerializer):
             return size_data.get('length')
         except:
             return None
+
