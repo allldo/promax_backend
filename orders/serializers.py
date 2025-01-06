@@ -55,8 +55,8 @@ class ProductOrderSerializer(ModelSerializer):
         for item in order_items:
             product_id = item['id']
             count = item['count']
-            volume = item['volume']
-            product_items.append(ProductOrderItem.objects.create(product_id=product_id, order=product_order, count=count, volume=volume))
+            artikul = item['artikul']
+            product_items.append(ProductOrderItem.objects.create(product_id=product_id, order=product_order, count=count, artikul=artikul))
         product_order.order_items.set(product_items)
 
         return product_order
