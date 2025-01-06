@@ -41,8 +41,6 @@ class ProductOrderSerializer(ModelSerializer):
                 raise ValidationError("'id' и 'count' должны быть целыми числами.")
             if item['count'] <= 0:
                 raise ValidationError("'count' должен быть больше нуля.")
-            if item['volume'] <= 0:
-                raise ValidationError("'volume' должен быть больше нуля.")
         return value
 
     def create(self, validated_data):
