@@ -79,6 +79,11 @@ class PostSerializer(ModelSerializer):
         model = Post
         fields = "__all__"
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['blocks'] = sorted(representation['blocks'], key=lambda x: x['id'])
+        return representation
+
 
 class FloorWorkItemSerializer(ModelSerializer):
 
