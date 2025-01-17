@@ -49,7 +49,7 @@ class ProductSerializer(ModelSerializer):
     length =SerializerMethodField()
     sub_category = SubCategorySerializer(many=False)
     useful_product = ProductNestedSerializer(many=True)
-    attachment = AttachmentSerializer(many=False)
+    attachment = AttachmentSerializer(many=True)
 
     class Meta:
         model = Product

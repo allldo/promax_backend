@@ -14,7 +14,7 @@ class Product(Model):
     sale = IntegerField(default=0, verbose_name="Скидка")
     squared_metres = FloatField(null=True, blank=True, verbose_name="Количество метров в упаковке")
     volume = JSONField(null=True, blank=True, verbose_name="Объем и цена")
-    attachment = ForeignKey("Attachment",null=True, blank=True, on_delete=SET_NULL, verbose_name="Ссылка на файл")
+    attachment = ManyToManyField("Attachment", blank=True, verbose_name="Ссылка на файл")
     # {"width": "123", "length": "53"} такого вида (str)
     size = JSONField(null=True, blank=True, verbose_name="Размер")
     chars = JSONField(null=True, blank=True, verbose_name="Описания")
@@ -45,7 +45,7 @@ class Product(Model):
         verbose_name_plural = "Продукты"
 
 class Attachment(Model):
-    title = CharField(max_length=225, verbose_name="Название")
+    title = CharField(max_length=225, null=True, blank=True,verbose_name="Название")
     file = FileField(upload_to="attachments/", null=True, blank=True)
 
 
