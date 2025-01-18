@@ -26,8 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = env('DEBUG')
-SERVER_ADDRESS = "https://backend.xn----7sbbsydmpeeherg.xn--p1ai/"
-ALLOWED_HOSTS = ['backend.xn----7sbbsydmpeeherg.xn--p1ai/']
+SERVER_ADDRESS = "https://backend.xn----7sbbsydmpeeherg.xn--p1ai"
+ALLOWED_HOSTS = ['backend.xn----7sbbsydmpeeherg.xn--p1ai']
 # change later
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
