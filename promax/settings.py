@@ -38,6 +38,10 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
      'Access-Control-Allow-Origin',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://backend.паркет-промакс.рф'
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
