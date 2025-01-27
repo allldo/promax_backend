@@ -18,10 +18,10 @@ class ServiceOrderCreateView(CreateAPIView):
 
 
 class ProductOrderCreateView(CreateAPIView):
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     queryset = ProductOrder.objects.all()
     serializer_class = ProductOrderSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
 
