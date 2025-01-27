@@ -1,3 +1,5 @@
+from email.policy import default
+
 from django.db.models import Model, CharField, IntegerField, BooleanField, ForeignKey, SET_NULL, CASCADE, JSONField, \
     TextField, ImageField, ManyToManyField, SlugField, FloatField, FileField
 from pytils.translit import slugify
@@ -10,7 +12,7 @@ class Product(Model):
     sposob_ukladki = TextField(null=True, blank=True, verbose_name="Способ укладки")
     parketnaya_himia = TextField(null=True, blank=True, verbose_name="Паркетная Химия")
     sub_category = ForeignKey("SubCategory", on_delete=SET_NULL, null=True, verbose_name="ПодКатегория")
-    price = IntegerField(null=True, blank=True, verbose_name="Цена")
+    price = IntegerField(default=1, verbose_name="Цена")
     sale = IntegerField(default=0, verbose_name="Скидка")
     squared_metres = FloatField(null=True, blank=True, verbose_name="Количество метров в упаковке")
     volume = JSONField(null=True, blank=True, verbose_name="Объем и цена")
