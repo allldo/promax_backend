@@ -27,6 +27,7 @@ class Block(Model):
     image = ImageField(upload_to='blocks/', null=True, blank=True, verbose_name="Изображение")
     title = CharField(max_length=335,null=True, blank=True, verbose_name="Название")
     text = TextField(null=True, blank=True, verbose_name="Текст")
+    video = TextField(blank=True)
 
     def __str__(self):
         return self.title if self.title else f"{self.id}"
