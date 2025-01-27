@@ -24,9 +24,13 @@ class ProductOrderCreateView(CreateAPIView):
     # permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
+        if self.request.user.is_authenticated:
+            product_order = serializer.save(user=self.request.user)
+        else:
+            product_order = serializer.save(user=None)
 
-        product_order = serializer.save(user=self.request.user)
         send_email_order(product_order, send_to="info@parket-promax.ru")
+
 
 
 class ExpressCalcCreateView(CreateAPIView):

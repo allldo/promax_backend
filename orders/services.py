@@ -8,7 +8,7 @@ def send_email_order(product_order, send_to):
     recipient_list = [send_to]
     subject = "Новый заказ"
     context = {
-        'user_name': product_order.user.name,
+        'user_name': product_order.user.name if product_order.user else product_order.name,
         'order_items': product_order.order_items.all(),
         'total_quantity': product_order.count(),
         'total_sum': product_order.total_sum(),
@@ -19,7 +19,7 @@ def send_email_order(product_order, send_to):
         'lift': product_order.lift,
     }
     text_content = f"""
-      Заказ от {product_order.user.name}
+      Заказ от {product_order.user.name if product_order.user else product_order.name}
       Детали заказа:
       - Продукт/ы: {', '.join([f"{product.product.title} ({product.product.artikul})" for product in product_order.order_items.all()])}
       - Количество: {product_order.count()}

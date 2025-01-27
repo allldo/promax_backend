@@ -47,7 +47,7 @@ class ProductOrderSerializer(ModelSerializer):
         user = self.context['request'].user
         order_items = validated_data.pop('order_items', [])
         product_order = ProductOrder.objects.create(**validated_data)
-        product_order.user = user
+        product_order.user = user if user.is_authenticated else None
         product_order.save()
         product_items = []
         for item in order_items:

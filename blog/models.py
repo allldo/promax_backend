@@ -90,8 +90,9 @@ class Instagram(Model):
 
 
 class CaseItem(Model):
-    iframe = TextField()
+    iframe = TextField(blank=True)
     title = CharField(max_length=225, verbose_name="Название")
+    link = TextField(blank=True)
 
     def __str__(self):
         return self.title
