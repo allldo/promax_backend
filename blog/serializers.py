@@ -102,7 +102,14 @@ class FloorWorksSerializer(ModelSerializer):
         fields = "__all__"
 
     def get_images(self, obj):
-        return [f"{settings.SERVER_ADDRESS}{image.image.url}" for image in obj.images.all()]
+        return [
+            {
+                "id": image.id,
+                "image_link": f"{settings.SERVER_ADDRESS}{image.image.url}",
+                "product_link": image.link,
+            }
+            for image in obj.images.all()
+        ]
 
 
 class AdvantageSerializer(ModelSerializer):
