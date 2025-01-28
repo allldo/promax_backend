@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.forms import ModelForm
 
 from blog.models import Service, Youtube, Telegram, Instagram, Post, Block, Case, CaseItem, Price, PriceItem, \
-    FloorWorks, FloorWorkItem, Advantage, Question
+    FloorWorks, FloorWorkItem, Advantage, Question, FloorWorksImage
 
 # admin.site.register(Service)
 admin.site.register(Post)

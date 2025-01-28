@@ -1,5 +1,5 @@
 from django.db.models import Model, CharField, SlugField, ImageField, ForeignKey, SET_NULL, ManyToManyField, TextField, \
-    IntegerField, EmailField, DateTimeField
+    IntegerField, EmailField, DateTimeField, URLField
 from pytils.translit import slugify
 
 from shop.models import Image
@@ -152,11 +152,20 @@ class FloorWorks(Model):
     title = CharField(max_length=275, verbose_name="Название")
     subtitle = CharField(max_length=275, verbose_name="Описание")
     items = ManyToManyField("FloorWorkItem", blank=True, verbose_name="Описания")
-    images = ManyToManyField("shop.Image", blank=True, verbose_name="Изображения")
+    images = ManyToManyField("FloorWorksImage", blank=True, verbose_name="Изображения")
+    # images = ManyToManyField("shop.Image", blank=True, verbose_name="Изображения")
+
 
     class Meta:
         verbose_name = "Напольные работы"
         verbose_name_plural = "Напольные работы"
+
+
+class FloorWorksImage(Model):
+    image = ImageField(upload_to='floor_images', verbose_name="Изображение")
+    link = URLField(max_length=225, null=True, blank=True)
+    def __str__(self):
+        return f"Image № {self.id}"
 
 
 class FloorWorkItem(Model):
