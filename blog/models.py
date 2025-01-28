@@ -93,7 +93,7 @@ class CaseItem(Model):
     iframe = TextField(blank=True)
     title = CharField(max_length=225, verbose_name="Название")
     post_link = TextField(blank=True)
-    image = ImageField(null=True, blank=True)
+    image_link = ImageField(null=True, blank=True)
 
     def __str__(self):
         return self.title
