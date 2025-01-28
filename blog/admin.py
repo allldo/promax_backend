@@ -97,3 +97,8 @@ class PriceAdmin(admin.ModelAdmin):
         return super().formfield_for_manytomany(db_field, request, **kwargs)
 
 admin.site.register(Price, PriceAdmin)
+
+@admin.register(FloorWorksImage)
+class FloorWorksImageAdmin(admin.ModelAdmin):
+    def has_module_permission(self, request):
+        return False
